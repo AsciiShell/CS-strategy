@@ -1,5 +1,5 @@
 
-*.pdf
+text/*.pdf
 
 *.aux
 
@@ -8,9 +8,3 @@
 *.gz
 
 *.out
-
-*.net
-
-*.raw
-
-*.fft
