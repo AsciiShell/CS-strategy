@@ -1,55 +1,39 @@
-﻿using System;
+﻿// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 namespace GameLib
 {
-    public abstract class BaseObject
+    public abstract class Item
     {
-        protected const float normal_rate = 1.0F;
-        protected const float advantage_rate = 2.0F;
-        protected const float disadvantage_rate = 1 / advantage_rate;
-
-        public abstract float rock_rate();
-        public abstract float paper_rate();
-        public abstract float scissors_rate();
-
-        public static implicit operator BaseObject(Type v)
+        private const float normal_rate = 1.0F;
+        private const float advantage_rate = 2.0F;
+        private const float disadvantage_rate = 1 / advantage_rate;
+        public enum Kind
         {
-            switch (v.Name)
+            ROCK,
+            PAPER,
+            SCISSORS
+        }
+        public static float GetRate(Kind a, Kind b)
+        {
+            if (a == b)
+                return normal_rate;
+            else if (a == Kind.ROCK)
             {
-                case "Rock":
-                    return new Rock();
-                case "Paper":
-                    return new Paper();
-                case "Scissors":
-                    return new Scissors();
-                default:
-                    return null;
-
+                if (b == Kind.SCISSORS)
+                    return advantage_rate;
+                else return disadvantage_rate;
             }
+            else if (a == Kind.PAPER)
+            {
+                if (b == Kind.ROCK)
+                    return advantage_rate;
+                else return disadvantage_rate;
+            }
+            else if (b == Kind.PAPER)
+                return advantage_rate;
+            else return disadvantage_rate;
         }
     }
-    public class Rock : BaseObject
-    {
-        public override float paper_rate() => disadvantage_rate;
 
-        public override float rock_rate() => normal_rate;
-
-        public override float scissors_rate() => advantage_rate;
-    }
-    public class Paper : BaseObject
-    {
-        public override float paper_rate() => normal_rate;
-
-        public override float rock_rate() => advantage_rate;
-
-        public override float scissors_rate() => disadvantage_rate;
-    }
-    public class Scissors : BaseObject
-    {
-        public override float paper_rate() => advantage_rate;
-
-        public override float rock_rate() => disadvantage_rate;
-
-        public override float scissors_rate() => normal_rate;
-    }
 }
