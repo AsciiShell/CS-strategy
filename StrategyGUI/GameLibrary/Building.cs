@@ -1,5 +1,6 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+using System;
 using System.Timers;
 namespace GameLibrary
 {
@@ -13,7 +14,7 @@ namespace GameLibrary
         public abstract Unit GetUnit();
     }
 
-    public class Miner : Building
+    public class Miner : Building, IDisposable
     {
         private const uint TIMER_TICK = 1000;
         private const uint MINER_COUNT = 1;
@@ -46,6 +47,10 @@ namespace GameLibrary
         }
 
         public override void Produce() { }
+        public void Dispose()
+        {
+            timer.Dispose();
+        }
     }
     public class Tower : Building
     {
@@ -69,7 +74,7 @@ namespace GameLibrary
         public override void Produce() { }
     }
 
-    public class Producer : Building
+    public class Producer : Building, IDisposable
     {
         private const uint TIMER_TICK = 1000;
         private const uint TIMER_WAIT_TICK = 50;
@@ -118,6 +123,11 @@ namespace GameLibrary
         public override void Produce()
         {
             UnitQueue++;
+        }
+
+        public void Dispose()
+        {
+            timer.Dispose();
         }
     }
 }
