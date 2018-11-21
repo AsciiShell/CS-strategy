@@ -8,9 +8,7 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            Point p = new Point();
-            p.X = 10;
-            p.Y = 10;
+            Point p = new Point(10, 10);
             Unit a = new Unit(Item.Kind.PAPER, p);
             Unit b = new Unit(Item.Kind.ROCK, p);
             a.Attack(b);
