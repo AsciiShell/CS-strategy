@@ -10,8 +10,9 @@ namespace GameLibrary
         {
         }
         public virtual uint Mine() => 0;
-        public abstract void Produce();
-        public abstract Unit GetUnit();
+        public virtual void Produce() { }
+        public virtual Unit GetUnit() => null;
+        public override void Attack(Cell target) { }
     }
 
     public class Miner : Building, IDisposable
@@ -35,7 +36,6 @@ namespace GameLibrary
         {
             Storage += MINER_COUNT;
         }
-        public override void Attack(Cell target) { }
 
         public override Unit GetUnit() { return null; }
 
@@ -46,7 +46,6 @@ namespace GameLibrary
             return result;
         }
 
-        public override void Produce() { }
         public void Dispose()
         {
             timer.Dispose();
@@ -69,9 +68,6 @@ namespace GameLibrary
                 target.GetDamage(this);
         }
 
-        public override Unit GetUnit() => null;
-
-        public override void Produce() { }
     }
 
     public class Producer : Building, IDisposable
@@ -108,7 +104,6 @@ namespace GameLibrary
             else
                 timer.Interval = TIMER_WAIT_TICK;
         }
-        public override void Attack(Cell target) { }
         public override Unit GetUnit()
         {
             if (UnitCount > 0)
