@@ -1,13 +1,17 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 using System;
-namespace GameLib
+namespace GameLibrary
 {
     public class Unit : Cell
     {
+        private const uint UNIT_DAMAGE = 10;
+        private const uint UNIT_HP = 100;
+
         public Unit(Item.Kind kind, Point location) : base(kind, location)
         {
-            BaseDamage = 10;
+            BaseDamage = UNIT_DAMAGE;
+            HP = UNIT_HP;
         }
 
         public override void Attack(Cell target)
