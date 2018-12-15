@@ -1,7 +1,5 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-using System;
-using System.Timers;
 namespace GameLibrary
 {
     public abstract class Building : Cell
@@ -15,26 +13,23 @@ namespace GameLibrary
         public override void Attack(Cell target) { }
     }
 
-    public class Miner : Building, IDisposable
+    public class Miner : Building
     {
         private const uint TIMER_TICK = 1000;
         private const uint MINER_COUNT = 1;
         private const uint MINER_HP = 200;
-        private Timer timer;
         public uint Storage { get; internal set; }
 
         public Miner(Item.Kind kind, Point location) : base(kind, location)
         {
-            timer = new Timer(TIMER_TICK);
-            timer.Elapsed += OnTimerTick;
-            timer.AutoReset = true;
-            timer.Start();
+            Notifer.Subscribe(OnTimerTick, TIMER_TICK);
             Storage = 0;
             HP = MINER_HP;
         }
-        private void OnTimerTick(object src, ElapsedEventArgs args)
+        private bool OnTimerTick()
         {
             Storage += MINER_COUNT;
+            return IsAlive();
         }
 
         public override Unit GetUnit() { return null; }
@@ -46,10 +41,6 @@ namespace GameLibrary
             return result;
         }
 
-        public void Dispose()
-        {
-            timer.Dispose();
-        }
     }
     public class Tower : Building
     {
@@ -70,39 +61,37 @@ namespace GameLibrary
 
     }
 
-    public class Producer : Building, IDisposable
+    public class Producer : Building
     {
-        private const uint TIMER_TICK = 1000;
-        private const uint TIMER_WAIT_TICK = 50;
+        private const uint TIMER_TICK = 100;
         private const uint PRODUCER_HP = 150;
         private const uint PRODUCER_PRICE = 10;
-        private Timer timer;
+        private const uint PRODUCER_TICK = 1000 / TIMER_TICK;
+
         public uint UnitCount { get; internal set; }
         public uint UnitQueue { get; internal set; }
+        public uint UnitProgress { get; internal set; }
         public uint Price() => PRODUCER_PRICE;
         public Producer(Item.Kind kind, Point location) : base(kind, location)
         {
-            timer = new Timer(TIMER_WAIT_TICK);
-            timer.Elapsed += OnTimerTick;
-            timer.AutoReset = true;
-            timer.Start();
+            Notifer.Subscribe(OnTimerTick, TIMER_TICK);
             UnitCount = 0;
             HP = PRODUCER_HP;
+            UnitProgress = 0;
         }
-        private void OnTimerTick(object src, ElapsedEventArgs args)
+        private bool OnTimerTick()
         {
             if (UnitQueue != 0)
             {
-                if (timer.Interval == TIMER_TICK)
+                UnitProgress++;
+                if (UnitProgress == PRODUCER_TICK)
                 {
                     UnitCount++;
                     UnitQueue--;
+                    UnitProgress = 0;
                 }
-                else
-                    timer.Interval = TIMER_TICK;
             }
-            else
-                timer.Interval = TIMER_WAIT_TICK;
+            return IsAlive();
         }
         public override Unit GetUnit()
         {
@@ -120,9 +109,5 @@ namespace GameLibrary
             UnitQueue++;
         }
 
-        public void Dispose()
-        {
-            timer.Dispose();
-        }
     }
 }
