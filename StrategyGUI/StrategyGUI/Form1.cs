@@ -23,6 +23,10 @@ namespace StrategyGUI
         private int _h;
         private int _sx;
         private int _sy;
+        private int _selX;
+        private int _selY;
+        private PaintEventArgs _args;
+
 
         public Form1()
         {
@@ -30,36 +34,54 @@ namespace StrategyGUI
              _yn = 9;
              _otx = 15;
              _oty = 30;
+
+            _selX = -1;
+            _selY = -1;
             InitializeComponent();
             _h = this.Size.Height - 39;
             _w = this.Size.Width;
             _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
             _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
+            _args  = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
         }
 
-        public void DrawRectangleInt(PaintEventArgs e)
+        private void DrawRectangleInt(PaintEventArgs e)
         {
 
             Pen blackPen = new Pen(Color.Black, 1);
-           
+            Pen greenPen = new Pen(Color.Red, 3);
+
             for (int i = 0; i < _xn; i++)
             {
-                for (int j =0; j < _yn; j++)
+                for (int j = 0; j < _yn; j++)
                 {
                     e.Graphics.DrawRectangle(blackPen, _otx + _sx * i, _oty + _sy * j, _sx, _sy);
+
                 }
-            }          
-            
+            }
+            if (_selX != -1 && _selY != -1)
+                e.Graphics.DrawRectangle(greenPen, _otx + _sx * _selX + 1, _oty + _sy * _selY + 1, _sx - 2, _sy - 2);
+
         }
 
-        public void drawInCell(PaintEventArgs e,int x,int y)
+        private void DrawUnits(PaintEventArgs e)
         {
-            Pen blackPen = new Pen(Color.Blue, 5);
+            Pen p = new Pen(Color.Blue, _sy / 12);
+            //int mass[9][2] ;
+            drawM(e, 0, 1, p);
+            drawM(e, 0, 4, p);
+            drawM(e, 0, 7, p);
 
-            e.Graphics.DrawRectangle(blackPen, _otx + _sx * x + _sx/3, _oty + _sy * y + _sy / 3, _sx/3, _sy/3);
+            drawP(e, 2, 2, p);
+            drawP(e, 2, 4, p);
+            drawP(e, 2, 6, p);
+
+            drawT(e, 4, 1, p);
+            drawT(e, 4, 4, p);
+            drawT(e, 4, 7, p);
         }
 
-        public void drawM(PaintEventArgs e, int x, int y, Pen p)
+        private void drawM(PaintEventArgs e, int x, int y, Pen p)
         {
             Graphics gr = e.Graphics;
              //= new Pen(Color.Blue, _sy/12);// цвет линии и ширина
@@ -78,7 +100,7 @@ namespace StrategyGUI
            // gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
         }
 
-        public void drawT(PaintEventArgs e, int x, int y, Pen pp)
+        private void drawT(PaintEventArgs e, int x, int y, Pen pp)
         {
             Graphics gr = e.Graphics;
             // = new Pen(Color.Blue, _sy/12);// цвет линии и ширина
@@ -95,7 +117,7 @@ namespace StrategyGUI
             //gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
         }
 
-        public void drawP(PaintEventArgs e, int x, int y, Pen pp)
+        private void drawP(PaintEventArgs e, int x, int y, Pen pp)
         {
             Graphics gr = e.Graphics;
             // = new Pen(Color.Blue, _sy/12);// цвет линии и ширина
@@ -119,22 +141,20 @@ namespace StrategyGUI
 
         private void button3_Click(object sender, EventArgs e)
         {
-            PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
-            DrawRectangleInt(args);
-            //drawInCell(args, 2, 2);
-            Pen p = new Pen(Color.Blue, _sy / 12);
-            //int mass[9][2] ;
-            drawM(args, 0, 1,p);
-            drawM(args, 0, 4, p);
-            drawM(args, 0, 7, p);
+            _args.Dispose();
+            paintAll();
+            
+        }
 
-            drawP(args, 2, 2,p);
-            drawP(args, 2, 4, p);
-            drawP(args, 2, 6, p);
-
-            drawT(args, 4,1,p);
-            drawT(args, 4,4, p);
-            drawT(args, 4, 7, p);
+        private void paintAll()
+        {
+            _h = this.Size.Height - 39;
+            _w = this.Size.Width;
+            _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
+            _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
+            _args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
+            DrawRectangleInt(_args);
+            DrawUnits(_args);
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -143,15 +163,22 @@ namespace StrategyGUI
             x = e.Location.X;
             y = e.Location.Y;
 
-            if (x < _otx || y < _oty || x > _sx * (_xn + 1) || y > _sy * (_yn + 1))
+            if (x < _otx || y < _oty || x > _sx * (_xn ) || y > _sy * (_yn +1))
             {
                 label1.Text = "  ";
+                _selX = -1;
+                _selY = -1;
+                DrawRectangleInt(_args);
             }
             else
             {
                 int iX = (x - _otx) / _sx;
                 int iY = (y - _oty) / _sy;
                 label1.Text = iX + "  " + iY;
+
+                _selX = iX;
+                _selY = iY;
+                DrawRectangleInt(_args);
             }
         }
     }
