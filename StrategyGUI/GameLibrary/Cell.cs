@@ -51,7 +51,8 @@ namespace GameLibrary
         {
             if (a is null || b is null)
                 return false;
-            return a.X == b.X && a.Y == b.Y;
+            else
+                return a.X == b.X && a.Y == b.Y;
         }
         public static bool operator !=(Point a, Point b)
         {
