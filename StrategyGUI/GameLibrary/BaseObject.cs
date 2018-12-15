@@ -5,6 +5,8 @@ namespace GameLibrary
 {
     public abstract class Item
     {
+        // Consts are always static
+        // https://stackoverflow.com/questions/13150343/the-constant-cannot-be-marked-static
         private const float normal_rate = 1.0F;
         private const float advantage_rate = 2.0F;
         private const float disadvantage_rate = 1 / advantage_rate;
