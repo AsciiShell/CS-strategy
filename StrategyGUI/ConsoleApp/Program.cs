@@ -8,13 +8,23 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-
-            Point p = new Point(10, 10);
-            Unit a = new Unit(Item.Kind.PAPER, p);
-            Unit b = new Unit(Item.Kind.ROCK, p);
-            a.Attack(b);
-            p.X = 100;
-            Console.WriteLine(a.Location.X);
+            List<Cell> list = new List<Cell>();
+            list.Append(new Producer(Item.Kind.PAPER, new Point(10, 10)));
+            list.Append(new Producer(Item.Kind.PAPER, new Point(20, 20)));
+            list.Append(new Producer(Item.Kind.PAPER, new Point(30, 30)));
+            list.Append(new Producer(Item.Kind.PAPER, new Point(40, 40)));
+            while (list.Count != 0)
+            {
+                Cell last = null;
+                foreach (Cell item in list)
+                {
+                    Console.WriteLine(item.Location);
+                    if (last == null)
+                        last = item;
+                }
+                list.Remove(last);
+                Console.WriteLine();
+            }
 
         }
     }
