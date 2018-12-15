@@ -59,16 +59,82 @@ namespace StrategyGUI
             e.Graphics.DrawRectangle(blackPen, _otx + _sx * x + _sx/3, _oty + _sy * y + _sy / 3, _sx/3, _sy/3);
         }
 
-       /* private void button2_Click(object sender, EventArgs e)
+        public void drawM(PaintEventArgs e, int x, int y, Pen p)
         {
-           
-        }*/
+            Graphics gr = e.Graphics;
+             //= new Pen(Color.Blue, _sy/12);// цвет линии и ширина
+            int sh = 8, vi = 8;
+
+            Point p1 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + vi * _sy / 10);// первая точка
+            Point p2 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// вторая точка
+            Point p3 = new Point(x * _sx + _otx + 2 * _sx / 4, y * _sy + _oty + 1 * _sy / 2);
+            Point p4 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + (10 - vi) * _sy / 10);
+            Point p5 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + vi * _sy / 10);
+
+            gr.DrawLine(p, p1, p2);// рисуем линию
+            gr.DrawLine(p, p3, p2);
+            gr.DrawLine(p, p3, p4);
+            gr.DrawLine(p, p5, p4);
+           // gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
+        }
+
+        public void drawT(PaintEventArgs e, int x, int y, Pen pp)
+        {
+            Graphics gr = e.Graphics;
+            // = new Pen(Color.Blue, _sy/12);// цвет линии и ширина
+            int sh = 8, vi = 8;
+
+            Point p1 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// первая точка
+            Point p2 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// вторая точка
+
+            Point p3 = new Point(x * _sx + _otx + _sx / 2, y * _sy + _oty + (10 - vi) * _sy / 10);
+            Point p4 = new Point(x * _sx + _otx + _sx / 2, y * _sy + _oty + vi * _sy / 10);
+
+            gr.DrawLine(pp, p1, p2);// рисуем линию
+            gr.DrawLine(pp, p3, p4);
+            //gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
+        }
+
+        public void drawP(PaintEventArgs e, int x, int y, Pen pp)
+        {
+            Graphics gr = e.Graphics;
+            // = new Pen(Color.Blue, _sy/12);// цвет линии и ширина
+            int sh = 7, vi = 8;
+
+            Point p1 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// первая точка
+            Point p2 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// вторая точка
+
+            Point p3 = new Point(x * _sx + _otx + (10 - sh) * _sx / 10, y * _sy + _oty + vi * _sy / 10);
+            Point p4 = new Point(x * _sx + _otx + sh * _sx / 10, y * _sy + _oty + vi * _sy / 10);
+
+            gr.DrawLine(pp, p3, p1);
+            gr.DrawLine(pp, p1, p2);// рисуем линию
+            gr.DrawLine(pp, p2, p4);
+            //gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
+        }
+        /* private void button2_Click(object sender, EventArgs e)
+         {
+
+         }*/
 
         private void button3_Click(object sender, EventArgs e)
         {
             PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
             DrawRectangleInt(args);
-            drawInCell(args, 2, 2);
+            //drawInCell(args, 2, 2);
+            Pen p = new Pen(Color.Blue, _sy / 12);
+            //int mass[9][2] ;
+            drawM(args, 0, 1,p);
+            drawM(args, 0, 4, p);
+            drawM(args, 0, 7, p);
+
+            drawP(args, 2, 2,p);
+            drawP(args, 2, 4, p);
+            drawP(args, 2, 6, p);
+
+            drawT(args, 4,1,p);
+            drawT(args, 4,4, p);
+            drawT(args, 4, 7, p);
         }
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
@@ -87,9 +153,6 @@ namespace StrategyGUI
                 int iY = (y - _oty) / _sy;
                 label1.Text = iX + "  " + iY;
             }
-            
-                
-
         }
     }
     
