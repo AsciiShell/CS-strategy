@@ -17,7 +17,7 @@ namespace GameLibrary
                 Move(Target.Location);
             return Target.IsAlive();
         }
-        public Unit(Item.Kind kind, Point location) : base(kind, location)
+        public Unit(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             BaseDamage = UNIT_DAMAGE;
             HP = UNIT_HP;

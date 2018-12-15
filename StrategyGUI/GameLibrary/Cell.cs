@@ -65,12 +65,14 @@ namespace GameLibrary
         public Item.Kind kind;
         public Point Location { get; internal set; }
         public uint HP { get; internal set; }
+        public Player Owner { get; internal set; }
         protected Cell Target = null;
-        public Cell(Item.Kind kind, Point location)
+        public Cell(Item.Kind kind, Point location, Player owner)
         {
             this.kind = kind;
             Location = location;
             BaseDamage = 0;
+            Owner = owner;
         }
 
         public void GetDamage(Cell sender)
