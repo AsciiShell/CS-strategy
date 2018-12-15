@@ -55,6 +55,7 @@ namespace GameLibrary
         {
             return !(a == b);
         }
+        public override string ToString() => X.ToString() + " " + Y.ToString();
     }
     public abstract class Cell
     {
