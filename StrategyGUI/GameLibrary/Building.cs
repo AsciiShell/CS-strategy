@@ -46,7 +46,13 @@ namespace GameLibrary
     {
         private const uint TOWER_DAMAGE = 4;
         private const uint TOWER_HP = 500;
-
+        private const uint TOWER_FREQ = 500;
+        private bool TargetHandler()
+        {
+            if (Target.Location.IsNearForLongRange(Location))
+                Target.GetDamage(this);
+            return Target.IsAlive();
+        }
         public Tower(Item.Kind kind, Point location) : base(kind, location)
         {
             HP = TOWER_HP;
@@ -55,8 +61,10 @@ namespace GameLibrary
 
         public override void Attack(Cell target)
         {
-            if (target.Location.IsNearForLongRange(Location))
-                target.GetDamage(this);
+            var lastTarget = Target;
+            Target = target;
+            if (lastTarget == null || !lastTarget.IsAlive())
+                Notifer.Subscribe(TargetHandler, TOWER_FREQ);
         }
 
     }

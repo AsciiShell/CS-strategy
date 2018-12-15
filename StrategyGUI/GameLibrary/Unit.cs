@@ -7,7 +7,16 @@ namespace GameLibrary
     {
         private const uint UNIT_DAMAGE = 10;
         private const uint UNIT_HP = 100;
+        private const uint UNIT_FREQ = 700;
 
+        private bool TargetHandler()
+        {
+            if (Target.Location.IsNearForClose(Location))
+                Target.GetDamage(this);
+            else
+                Move(Target.Location);
+            return Target.IsAlive();
+        }
         public Unit(Item.Kind kind, Point location) : base(kind, location)
         {
             BaseDamage = UNIT_DAMAGE;
@@ -16,10 +25,11 @@ namespace GameLibrary
 
         public override void Attack(Cell target)
         {
-            if (target.Location.IsNearForClose(Location))
-                target.GetDamage(this);
-            else
-                Move(target.Location);
+            var lastTarget = Target;
+            Target = target;
+            if (lastTarget == null || !lastTarget.IsAlive())
+                Notifer.Subscribe(TargetHandler, UNIT_FREQ);
+
         }
         public void Move(Point to)
         {

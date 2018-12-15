@@ -43,13 +43,15 @@ namespace GameLibrary
         {
             return GetDistance(p) < 1.5;
         }
-        public bool IsNearForLongRange(Point p) 
+        public bool IsNearForLongRange(Point p)
         {
             return GetDistance(p) <= 4;
         }
         public static bool operator ==(Point a, Point b)
         {
-            return a != null && b != null && a.X == b.X && a.Y == b.Y;
+            if (a is null || b is null)
+                return false;
+            return a.X == b.X && a.Y == b.Y;
         }
         public static bool operator !=(Point a, Point b)
         {
@@ -63,6 +65,7 @@ namespace GameLibrary
         public Item.Kind kind;
         public Point Location { get; internal set; }
         public uint HP { get; internal set; }
+        protected Cell Target = null;
         public Cell(Item.Kind kind, Point location)
         {
             this.kind = kind;
@@ -77,6 +80,7 @@ namespace GameLibrary
                 HP = 0;
             else
                 HP -= (uint)damage;
+            Console.WriteLine(HP);
         }
         public abstract void Attack(Cell target);
         public bool IsAlive() => HP != 0;

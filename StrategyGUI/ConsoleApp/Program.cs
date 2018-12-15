@@ -8,24 +8,15 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            List<Cell> list = new List<Cell>();
-            list.Append(new Producer(Item.Kind.PAPER, new Point(10, 10)));
-            list.Append(new Producer(Item.Kind.PAPER, new Point(20, 20)));
-            list.Append(new Producer(Item.Kind.PAPER, new Point(30, 30)));
-            list.Append(new Producer(Item.Kind.PAPER, new Point(40, 40)));
-            while (list.Count != 0)
+            Cell a = new Unit(Item.Kind.SCISSORS, new Point(10, 0));
+            Cell b = new Tower(Item.Kind.PAPER, new Point(10, 10));
+            a.Attack(b);
+            b.Attack(a);
+            while(a.IsAlive() && b.IsAlive())
             {
-                Cell last = null;
-                foreach (Cell item in list)
-                {
-                    Console.WriteLine(item.Location);
-                    if (last == null)
-                        last = item;
-                }
-                list.Remove(last);
-                Console.WriteLine();
-            }
+                System.Threading.Thread.Sleep(10);
 
+            }
         }
     }
 }
