@@ -45,6 +45,7 @@
     <Compile Include="Building.cs" />
     <Compile Include="Cell.cs" />
     <Compile Include="List.cs" />
+    <Compile Include="Notifer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Unit.cs" />
   </ItemGroup>
