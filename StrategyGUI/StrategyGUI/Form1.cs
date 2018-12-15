@@ -14,25 +14,35 @@ namespace StrategyGUI
 {
     public partial class Form1 : Form
     {
+
+        private int _xn = 10;
+        private int _yn = 5;
+        private int _otx = 15;
+        private int _oty = 30;
+        private int _w;
+        private int _h;
+        private int _sx;
+        private int _sy;
+
         public Form1()
         {
-            InitializeComponent();
-            
-
-
+            InitializeComponent();            
+            _h = this.Size.Height - 39;
+            _w = this.Size.Width;
+            _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
+            _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
         }
 
-        public void DrawRectangleInt(PaintEventArgs e,int xn,int yn, int otx, int oty)
+        public void DrawRectangleInt(PaintEventArgs e)
         {
 
             Pen blackPen = new Pen(Color.Black, 1);
-            int sx = (this.Size.Width -15- 2*otx) / xn;
-            int sy = (this.Size.Height - 39 - 2*oty) / yn;
-            for (int i = 0; i < xn; i++)
+           
+            for (int i = 0; i < _xn; i++)
             {
-                for (int j =0; j < yn; j++)
+                for (int j =0; j < _yn; j++)
                 {
-                    e.Graphics.DrawRectangle(blackPen, otx + sx * i, oty + sy * j, sx, sy);
+                    e.Graphics.DrawRectangle(blackPen, _otx + _sx * i, _oty + _sy * j, _sx, _sy);
                 }
             }          
             
@@ -40,15 +50,16 @@ namespace StrategyGUI
 
         private void button1_Click(object sender, EventArgs e)
         {
-            int xn = 10;
-            int yn = 10;
-            int otx = 15;
-            int oty = 30;
-            int h = this.Size.Height - 39;
-            int w = this.Size.Width;
+            PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
+            DrawRectangleInt(args);
+            drawInCell(args, 2, 2);
+        }
 
-            PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, w, h));
-            DrawRectangleInt(args, xn, yn, otx,oty);
+        public void drawInCell(PaintEventArgs e,int x,int y)
+        {
+            Pen blackPen = new Pen(Color.Blue, 5);
+
+            e.Graphics.DrawRectangle(blackPen, _otx + _sx * x + _sx/3, _oty + _sy * y + _sy / 3, _sx/3, _sy/3);
         }
     }
 }
