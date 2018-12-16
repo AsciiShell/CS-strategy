@@ -144,35 +144,34 @@ namespace StrategyGUI
                     label1.Text = iX + "  " + iY;
                     if ((_selX1 == -1 && _selY1 == -1) || (_selX1 == iX && _selY1 == iY))
                     {
-                        _selX1 = iX;
-                        _selY1 = iY;
+                        
+                        _selX1 = -1;
+                        _selY1 = -1;
                         _selX2 = -1;
                         _selY2 = -1;
                         paintAll();
-                        foreach (Cell item in gameServer.Players[0].Army)
+                        foreach (Cell item in gameServer)
                         {
-                            if (item.Location.X == iX && item.Location.X == iY)
+                            if (item.Location.X == iX && item.Location.Y == iY)
                             {                                
-                                if (item is Producer)
+                                if (item is Tower)
                                 {
-                                    
-                                    _selX1 = -1;
-                                    _selY1 = -1;
+                                    _selX1 = iX;
+                                    _selY1 = iY;
                                 }
-                                if (item is Miner)
+                                if (item is Unit)
                                 {
-
-                                    _selX1 = -1;
-                                    _selY1 = -1;
+                                    _selX1 = iX;
+                                    _selY1 = iY;
                                 }                                                           
                             }
                         }
                     }
                     else
                     {
-                        foreach (Cell item in gameServer.Players[0].Army)
+                        foreach (Cell item in gameServer)
                         {
-                            if (item.Location.X == iX && item.Location.X == iY)
+                            if (item.Location.X == iX && item.Location.Y == iY)
                             {
                                 if (item is Tower)
                                 {
