@@ -46,6 +46,8 @@ namespace GameLibrary
             Size = new Point(0, 0);
             IsEnabled = true;
             SetMap1();
+            Players[0].ConnectGame(this);
+            Players[1].ConnectGame(this);
             Notifer.Subscribe(CleanMap, GAME_CLEAN_TIME);
         }
         public IEnumerator GetEnumerator()
