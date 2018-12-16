@@ -8,11 +8,8 @@ namespace ConsoleApp
     {
         static void Main(string[] args)
         {
-            Cell a = new Unit(Item.Kind.SCISSORS, new Point(10, 0));
-            Cell b = new Tower(Item.Kind.PAPER, new Point(10, 10));
-            a.Attack(b);
-            b.Attack(a);
-            while(a.IsAlive() && b.IsAlive())
+            GameServer gameServer = new GameServer(new Player(Player.Kind.USER, "User1"), new Player(Player.Kind.BOT, "BOT1"));
+            while(gameServer.IsEnabled)
             {
                 System.Threading.Thread.Sleep(10);
 

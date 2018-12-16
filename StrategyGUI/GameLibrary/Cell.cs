@@ -51,7 +51,8 @@ namespace GameLibrary
         {
             if (a is null || b is null)
                 return false;
-            return a.X == b.X && a.Y == b.Y;
+            else
+                return a.X == b.X && a.Y == b.Y;
         }
         public static bool operator !=(Point a, Point b)
         {
@@ -65,12 +66,15 @@ namespace GameLibrary
         public Item.Kind kind;
         public Point Location { get; internal set; }
         public uint HP { get; internal set; }
+        public Player Owner { get; internal set; }
         protected Cell Target = null;
-        public Cell(Item.Kind kind, Point location)
+        public Cell(Item.Kind kind, Point location, Player owner)
         {
             this.kind = kind;
             Location = location;
             BaseDamage = 0;
+            Owner = owner;
+            Owner.AddCell(this);
         }
 
         public void GetDamage(Cell sender)

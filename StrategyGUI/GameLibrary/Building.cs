@@ -4,7 +4,7 @@ namespace GameLibrary
 {
     public abstract class Building : Cell
     {
-        public Building(Item.Kind kind, Point location) : base(kind, location)
+        public Building(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
         }
         public virtual uint Mine() => 0;
@@ -20,7 +20,7 @@ namespace GameLibrary
         private const uint MINER_HP = 200;
         public uint Storage { get; internal set; }
 
-        public Miner(Item.Kind kind, Point location) : base(kind, location)
+        public Miner(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             Notifer.Subscribe(OnTimerTick, TIMER_TICK);
             Storage = 0;
@@ -53,7 +53,7 @@ namespace GameLibrary
                 Target.GetDamage(this);
             return Target.IsAlive();
         }
-        public Tower(Item.Kind kind, Point location) : base(kind, location)
+        public Tower(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             HP = TOWER_HP;
             BaseDamage = TOWER_DAMAGE;
@@ -61,6 +61,8 @@ namespace GameLibrary
 
         public override void Attack(Cell target)
         {
+            if (target.Owner == Owner)
+                return;
             var lastTarget = Target;
             Target = target;
             if (lastTarget == null || !lastTarget.IsAlive())
@@ -80,7 +82,7 @@ namespace GameLibrary
         public uint UnitQueue { get; internal set; }
         public uint UnitProgress { get; internal set; }
         public uint Price() => PRODUCER_PRICE;
-        public Producer(Item.Kind kind, Point location) : base(kind, location)
+        public Producer(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             Notifer.Subscribe(OnTimerTick, TIMER_TICK);
             UnitCount = 0;
@@ -106,7 +108,7 @@ namespace GameLibrary
             if (UnitCount > 0)
             {
                 UnitCount--;
-                return new Unit(kind, Location);
+                return new Unit(kind, Location, Owner);
             }
             else
                 return null;
