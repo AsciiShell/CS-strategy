@@ -13,7 +13,7 @@ namespace GameLibrary
         public virtual void Produce() { }
         public override void Attack(Cell target) { }
         public override abstract void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty);
-        protected Pen GetColor() => IsAlive() ? new Pen(Color.Red, 2) : new Pen(Color.Gray, 2);
+        protected Pen GetColor() => IsAlive() ? new Pen(Owner.Color, 2) : new Pen(Color.Gray, 2);
     }
 
     public class Miner : Building
@@ -62,7 +62,7 @@ namespace GameLibrary
         {
             if (Target.Location.IsNearForLongRange(Location))
                 Target.GetDamage(this);
-            return Target.IsAlive();
+            return Target.IsAlive() && IsAlive();
         }
         public Tower(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
@@ -133,7 +133,7 @@ namespace GameLibrary
                 Owner.ResourcesPaper -= PRODUCER_PRICE;
                 UnitQueue++;
             }
-            else if (kind == Item.Kind.ROCK && Owner.ResourcesPaper >= PRODUCER_PRICE)
+            else if (kind == Item.Kind.ROCK && Owner.ResourcesRock >= PRODUCER_PRICE)
             {
                 Owner.ResourcesRock -= PRODUCER_PRICE;
                 UnitQueue++;

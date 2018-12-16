@@ -1,4 +1,4 @@
-﻿// This is a personal academic project. Dear PVS-Studio, please check it.
+// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 using System;
 using System.Collections.Generic;
@@ -105,7 +105,7 @@ namespace StrategyGUI
             DrawRectangleInt(args);
             DrawUnits(args);
             args.Graphics.Dispose();
-                return true;
+                return gameServer.IsEnabled;
         }
         /*private void paintAroundCell(int x, int y)
         {
