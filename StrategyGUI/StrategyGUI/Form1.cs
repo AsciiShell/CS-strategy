@@ -27,12 +27,18 @@ namespace StrategyGUI
         private int _selY1;
         private int _selX2;
         private int _selY2;
+        private GameLibrary.List<Cell> _lastCell;
+        private Player _me;
+        private Player _enemy;
 
         private GameServer gameServer;
 
         public Form1()
         {
-            gameServer = new GameServer(new Player(Player.Kind.USER, "User1"), new Player(Player.Kind.BOT, "BOT1"));
+            _me = new Player(Player.Kind.USER, "User1");
+            _enemy = new Player(Player.Kind.BOT, "BOT1");
+            gameServer = new GameServer(_me, _enemy);
+            _lastCell = new GameLibrary.List<Cell>();
             _xn = 20;
             _yn = 9;
             _otx = 15;
@@ -86,11 +92,7 @@ namespace StrategyGUI
          {
 
          }*/
-        private void button3_Click(object sender, EventArgs e)
-        {
-            
-            paintAll();            
-        }
+        
         private bool paintAll()
         {
             
@@ -124,7 +126,7 @@ namespace StrategyGUI
                 _selY1 = -1;
                 _selX2 = -1;
                 _selY2 = -1;
-                paintAll();
+                
             }
             else { 
                 int x, y;
@@ -143,59 +145,48 @@ namespace StrategyGUI
                     int iX = (x - _otx) / _sx;
                     int iY = (y - _oty) / _sy;
                     label1.Text = iX + "  " + iY;
-                    if ((_selX1 == -1 && _selY1 == -1) || (_selX1 == iX && _selY1 == iY))
+                    if (_lastCell.Count == 0 )
                     {
                         
-                        _selX1 = -1;
-                        _selY1 = -1;
+                        _selX1 = iX;
+                        _selY1 = iY;
                         _selX2 = -1;
                         _selY2 = -1;
-                        paintAll();
-                        foreach (Cell item in gameServer)
+                        _lastCell.Clear();
+                        foreach (Cell item in _me.Army)
                         {
                             if (item.Location.X == iX && item.Location.Y == iY)
                             {                                
                                 if (item is Tower)
                                 {
-                                    _selX1 = iX;
-                                    _selY1 = iY;
+                                    _lastCell.Append(item);
+                                }
+                                if (item is Producer)
+                                {
+                                    ((Building)item).Produce();
                                 }
                                 if (item is Unit)
                                 {
-                                    _selX1 = iX;
-                                    _selY1 = iY;
+                                    _lastCell.Append(item);
                                 }                                                           
                             }
                         }
                     }
-                    else
+                    else //if(_lastCell != null)
                     {
-                        foreach (Cell item in gameServer)
+                        foreach (Cell item in _enemy.Army)
                         {
                             if (item.Location.X == iX && item.Location.Y == iY)
                             {
-                                if (item is Tower)
+                                foreach (Cell item2 in _lastCell)
                                 {
-                                    //это башня
-                                }
-                                if (item is Miner)
-                                {
-                                    //это miner
-                                }
-                                if (item is Producer)
-                                {
-                                    //это producer
-                                }
-                                if (item is Unit)
-                                {
-                                    //это unit
+                                    item2.Attack(item);
                                 }
                             }
                         }
-
                         _selX2 = iX;
                         _selY2 = iY;
-                        paintAll();
+                        
                     }
                 }
             }

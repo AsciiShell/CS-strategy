@@ -23,6 +23,13 @@ namespace GameLibrary
         private Node Head, Tail;
         public uint Count { get; internal set; }
 
+
+        public void Clear()
+        {
+            Head = null;
+            Tail = null;
+            Count = 0;
+        }
         public List()
         {
             Head = null;
