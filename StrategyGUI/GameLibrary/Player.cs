@@ -1,6 +1,8 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
+using System.Drawing;
+
 namespace GameLibrary
 {
     public class Player
@@ -19,12 +21,14 @@ namespace GameLibrary
         public uint ResourcesScissors { get; internal set; }
         public bool SomeAlive { get; internal set; }
         public GameServer gameServer { get; internal set; }
-        public Player(Kind kind, string name)
+        public Color Color { get; internal set; }
+        public Player(Kind kind, string name, Color color)
         {
             Type = kind;
             Name = name;
             Army = new List<Cell>();
             SomeAlive = true;
+            Color = color;
             ResourcesPaper = DEFAULT_RESOURCES;
             ResourcesRock = DEFAULT_RESOURCES;
             ResourcesScissors = DEFAULT_RESOURCES;

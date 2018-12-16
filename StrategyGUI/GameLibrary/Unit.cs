@@ -10,7 +10,7 @@ namespace GameLibrary
     {
         private const uint UNIT_DAMAGE = 10;
         private const uint UNIT_HP = 100;
-        private const uint UNIT_FREQ = 700;
+        private const uint UNIT_FREQ = 1000;
 
         private bool TargetHandler()
         {
@@ -18,7 +18,7 @@ namespace GameLibrary
                 Target.GetDamage(this);
             else
                 Move(Target.Location);
-            return Target.IsAlive();
+            return Target.IsAlive() && IsAlive();
         }
         public Unit(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
@@ -50,17 +50,14 @@ namespace GameLibrary
         public override void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty)
         {
             int sh = 8, vi = 8;
-            Pen p = new Pen(Color.Blue, 2);
-            System.Drawing.Point p1 = new System.Drawing.Point(Location.X * sx + otx + sx * (10 - sh) / 10, Location.Y * sy + oty + vi * sy / 10);// первая точка
-            System.Drawing.Point p2 = new System.Drawing.Point(Location.X * sx + otx + sx * (10 - sh) / 10, Location.Y * sy + oty + (10 - vi) * sy / 10);// вторая точка
-            System.Drawing.Point p3 = new System.Drawing.Point(Location.X * sx + otx + 2 * sx / 4, Location.Y * sy + oty + 1 * sy / 2);
+            Pen p = new Pen(Owner.Color, 2);
+            System.Drawing.Point p1 = new System.Drawing.Point(Location.X * sx + otx + sx * (10 - sh) / 10, Location.Y * sy + oty + vi * sy / 10);
+            System.Drawing.Point p2 = new System.Drawing.Point(Location.X * sx + otx + sx * (10 - sh) / 10, Location.Y * sy + oty + (10 - vi) * sy / 10);
             System.Drawing.Point p4 = new System.Drawing.Point(Location.X * sx + otx + sx * sh / 10, Location.Y * sy + oty + (10 - vi) * sy / 10);
             System.Drawing.Point p5 = new System.Drawing.Point(Location.X * sx + otx + sx * sh / 10, Location.Y * sy + oty + vi * sy / 10);
 
-            e.Graphics.DrawLine(p, p1, p2);// рисуем линию
-            e.Graphics.DrawLine(p, p3, p2);
-            e.Graphics.DrawLine(p, p3, p4);
-            e.Graphics.DrawLine(p, p5, p4);
+            e.Graphics.DrawLine(p, p1, p4);// рисуем линию
+            e.Graphics.DrawLine(p, p2, p5);
         }
     }
 }

@@ -35,7 +35,7 @@ namespace GameLibrary
 
         public double GetDistance(Point p)
         {
-            return Math.Sqrt((X - p.X) ^ 2 + (Y - p.Y) ^ 2);
+            return Math.Sqrt(Math.Pow(X - p.X, 2) + Math.Pow(Y - p.Y, 2));
         }
 
         public override int GetHashCode()
