@@ -8,6 +8,7 @@ namespace GameLibrary
     public class Player
     {
         private const uint DEFAULT_RESOURCES = Producer.PRODUCER_PRICE;
+        private const uint BOT_FREQ = 2000;
         public enum Kind
         {
             USER,
@@ -37,7 +38,7 @@ namespace GameLibrary
         {
             gameServer = game;
             if (Type == Kind.BOT)
-                Notifer.Subscribe(AI, Notifer.TIMER_TICK);
+                Notifer.Subscribe(AI, BOT_FREQ);
         }
         public void AddCell(Cell cell)
         {
