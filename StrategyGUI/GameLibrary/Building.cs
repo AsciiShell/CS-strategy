@@ -11,7 +11,6 @@ namespace GameLibrary
         {
         }
         public virtual void Produce() { }
-        public virtual Unit GetUnit() => null;
         public override void Attack(Cell target) { }
         public override abstract void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty);
     }
@@ -36,8 +35,6 @@ namespace GameLibrary
                 Owner.ResourcesScissors += MINER_COUNT;
             return IsAlive();
         }
-
-        public override Unit GetUnit() { return null; }
 
         public override void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty)
         {
@@ -105,14 +102,11 @@ namespace GameLibrary
         public const uint PRODUCER_PRICE = 10;
         private const uint PRODUCER_TICK = 1000 / TIMER_TICK;
 
-        public uint UnitCount { get; internal set; }
         public uint UnitQueue { get; internal set; }
         public uint UnitProgress { get; internal set; }
-        public uint Price() => PRODUCER_PRICE;
         public Producer(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             Notifer.Subscribe(OnTimerTick, TIMER_TICK);
-            UnitCount = 0;
             HP = PRODUCER_HP;
             UnitProgress = 0;
         }
@@ -123,22 +117,12 @@ namespace GameLibrary
                 UnitProgress++;
                 if (UnitProgress == PRODUCER_TICK)
                 {
-                    UnitCount++;
+                    new Unit(kind, Location, Owner);
                     UnitQueue--;
                     UnitProgress = 0;
                 }
             }
             return IsAlive();
-        }
-        public override Unit GetUnit()
-        {
-            if (UnitCount > 0)
-            {
-                UnitCount--;
-                return new Unit(kind, Location, Owner);
-            }
-            else
-                return null;
         }
 
         public override void Produce()
