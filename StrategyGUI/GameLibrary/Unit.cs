@@ -25,6 +25,8 @@ namespace GameLibrary
 
         public override void Attack(Cell target)
         {
+            if (target.Owner == Owner)
+                return;
             var lastTarget = Target;
             Target = target;
             if (lastTarget == null || !lastTarget.IsAlive())

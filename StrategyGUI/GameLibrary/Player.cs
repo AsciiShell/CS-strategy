@@ -15,12 +15,32 @@ namespace GameLibrary
             USER,
             BOT
         }
+        public List<Cell> Army { get; internal set; }
         public string Name { get; internal set; }
         public Kind Type { get; internal set; }
         public Player(Kind kind, string name)
         {
-            this.Type = kind;
-            this.Name = name;
+            Type = kind;
+            Name = name;
+            Army = new List<Cell>();
+        }
+        public void AddCell(Cell cell)
+        {
+            Army.Append(cell);
+        }
+        internal bool CleanMap()
+        {
+            bool someAlive = false;
+            foreach (Cell item in Army)
+            {
+                if (item.IsAlive())
+                    someAlive = true;
+                if (item is Unit && !item.IsAlive())
+                {
+                    Army.Remove(item);
+                }
+            }
+            return someAlive;
         }
     }
 }

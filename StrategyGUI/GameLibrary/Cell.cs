@@ -74,6 +74,7 @@ namespace GameLibrary
             Location = location;
             BaseDamage = 0;
             Owner = owner;
+            Owner.AddCell(this);
         }
 
         public void GetDamage(Cell sender)
