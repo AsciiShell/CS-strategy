@@ -56,7 +56,7 @@ namespace GameLibrary
     public class Tower : Building
     {
         private const uint TOWER_DAMAGE = 4;
-        private const uint TOWER_HP = 5;
+        private const uint TOWER_HP = 500;
         private const uint TOWER_FREQ = 500;
         private bool TargetHandler()
         {
