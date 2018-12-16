@@ -10,6 +10,7 @@ namespace GameLibrary
 {
     public class Player
     {
+        private const uint DEFAULT_RESOURCES = Producer.PRODUCER_PRICE;
         public enum Kind
         {
             USER,
@@ -18,11 +19,18 @@ namespace GameLibrary
         public List<Cell> Army { get; internal set; }
         public string Name { get; internal set; }
         public Kind Type { get; internal set; }
+        public uint ResourcesRock { get; internal set; }
+        public uint ResourcesPaper { get; internal set; }
+        public uint ResourcesScissors { get; internal set; }
+
         public Player(Kind kind, string name)
         {
             Type = kind;
             Name = name;
             Army = new List<Cell>();
+            ResourcesPaper = DEFAULT_RESOURCES;
+            ResourcesRock = DEFAULT_RESOURCES;
+            ResourcesScissors = DEFAULT_RESOURCES;
         }
         public void AddCell(Cell cell)
         {

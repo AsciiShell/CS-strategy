@@ -10,7 +10,6 @@ namespace GameLibrary
         public Building(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
         }
-        public virtual uint Mine() => 0;
         public virtual void Produce() { }
         public virtual Unit GetUnit() => null;
         public override void Attack(Cell target) { }
@@ -22,28 +21,24 @@ namespace GameLibrary
         private const uint TIMER_TICK = 1000;
         private const uint MINER_COUNT = 1;
         private const uint MINER_HP = 200;
-        public uint Storage { get; internal set; }
-
         public Miner(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             Notifer.Subscribe(OnTimerTick, TIMER_TICK);
-            Storage = 0;
             HP = MINER_HP;
         }
         private bool OnTimerTick()
         {
-            Storage += MINER_COUNT;
+            if (kind == Item.Kind.PAPER)
+                Owner.ResourcesPaper += MINER_COUNT;
+            else if (kind == Item.Kind.ROCK)
+                Owner.ResourcesRock += MINER_COUNT;
+            else if (kind == Item.Kind.SCISSORS)
+                Owner.ResourcesScissors += MINER_COUNT;
             return IsAlive();
         }
 
         public override Unit GetUnit() { return null; }
 
-        public override uint Mine()
-        {
-            var result = Storage;
-            Storage = 0;
-            return result;
-        }
         public override void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty)
         {
             int sh = 8, vi = 8;
@@ -107,7 +102,7 @@ namespace GameLibrary
     {
         private const uint TIMER_TICK = 100;
         private const uint PRODUCER_HP = 150;
-        private const uint PRODUCER_PRICE = 10;
+        public const uint PRODUCER_PRICE = 10;
         private const uint PRODUCER_TICK = 1000 / TIMER_TICK;
 
         public uint UnitCount { get; internal set; }
@@ -148,7 +143,21 @@ namespace GameLibrary
 
         public override void Produce()
         {
-            UnitQueue++;
+            if (kind == Item.Kind.PAPER && Owner.ResourcesPaper >= PRODUCER_PRICE)
+            {
+                Owner.ResourcesPaper -= PRODUCER_PRICE;
+                UnitQueue++;
+            }
+            else if (kind == Item.Kind.ROCK && Owner.ResourcesPaper >= PRODUCER_PRICE)
+            {
+                Owner.ResourcesRock -= PRODUCER_PRICE;
+                UnitQueue++;
+            }
+            else if (kind == Item.Kind.SCISSORS && Owner.ResourcesScissors >= PRODUCER_PRICE)
+            {
+                Owner.ResourcesScissors -= PRODUCER_PRICE;
+                UnitQueue++;
+            }
         }
         public override void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty)
         {
