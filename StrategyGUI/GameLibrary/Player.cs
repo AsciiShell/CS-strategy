@@ -1,10 +1,5 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameLibrary
 {
@@ -23,17 +18,22 @@ namespace GameLibrary
         public uint ResourcesPaper { get; internal set; }
         public uint ResourcesScissors { get; internal set; }
         public bool SomeAlive { get; internal set; }
+        public GameServer gameServer { get; internal set; }
         public Player(Kind kind, string name)
         {
             Type = kind;
             Name = name;
             Army = new List<Cell>();
+            SomeAlive = true;
             ResourcesPaper = DEFAULT_RESOURCES;
             ResourcesRock = DEFAULT_RESOURCES;
             ResourcesScissors = DEFAULT_RESOURCES;
+        }
+        public void ConnectGame(GameServer game)
+        {
+            gameServer = game;
             if (Type == Kind.BOT)
                 Notifer.Subscribe(AI, Notifer.TIMER_TICK);
-
         }
         public void AddCell(Cell cell)
         {
@@ -55,6 +55,22 @@ namespace GameLibrary
         }
         private bool AI()
         {
+            Cell target = null;
+            foreach (Cell item in gameServer)
+            {
+                if (item.Owner != this && item.IsAlive())
+                {
+                    target = item;
+                }
+
+            }
+            if (!(target is null))
+                foreach (Cell item in Army)
+                {
+                    item.Attack(target);
+                    if (item is Producer)
+                        ((Building)item).Produce();
+                }
             return SomeAlive;
         }
     }
