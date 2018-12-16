@@ -1,6 +1,8 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
+using System.Collections;
+
 namespace GameLibrary
 {
     public class GameServer
@@ -45,6 +47,17 @@ namespace GameLibrary
             IsEnabled = true;
             SetMap1();
             Notifer.Subscribe(CleanMap, GAME_CLEAN_TIME);
+        }
+        public IEnumerator GetEnumerator()
+        {
+            foreach (Cell item in Players[0].Army)
+            {
+                yield return item;
+            }
+            foreach (Cell item in Players[1].Army)
+            {
+                yield return item;
+            }
         }
     }
 }
