@@ -22,7 +22,7 @@ namespace GameLibrary
         public uint ResourcesRock { get; internal set; }
         public uint ResourcesPaper { get; internal set; }
         public uint ResourcesScissors { get; internal set; }
-
+        public bool SomeAlive { get; internal set; }
         public Player(Kind kind, string name)
         {
             Type = kind;
@@ -31,6 +31,9 @@ namespace GameLibrary
             ResourcesPaper = DEFAULT_RESOURCES;
             ResourcesRock = DEFAULT_RESOURCES;
             ResourcesScissors = DEFAULT_RESOURCES;
+            if (Type == Kind.BOT)
+                Notifer.Subscribe(AI, Notifer.TIMER_TICK);
+
         }
         public void AddCell(Cell cell)
         {
@@ -38,17 +41,21 @@ namespace GameLibrary
         }
         internal bool CleanMap()
         {
-            bool someAlive = false;
+            SomeAlive = false;
             foreach (Cell item in Army)
             {
                 if (item.IsAlive())
-                    someAlive = true;
+                    SomeAlive = true;
                 if (item is Unit && !item.IsAlive())
                 {
                     Army.Remove(item);
                 }
             }
-            return someAlive;
+            return SomeAlive;
+        }
+        private bool AI()
+        {
+            return SomeAlive;
         }
     }
 }
