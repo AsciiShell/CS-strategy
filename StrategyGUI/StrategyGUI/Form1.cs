@@ -35,8 +35,8 @@ namespace StrategyGUI
 
         public Form1()
         {
-            _me = new Player(Player.Kind.USER, "User1");
-            _enemy = new Player(Player.Kind.BOT, "BOT1");
+            _me = new Player(Player.Kind.USER, "User1", Color.Red);
+            _enemy = new Player(Player.Kind.BOT, "BOT1", Color.Blue);
             gameServer = new GameServer(_me, _enemy);
             _lastCell = new GameLibrary.List<Cell>();
             _xn = 20;
