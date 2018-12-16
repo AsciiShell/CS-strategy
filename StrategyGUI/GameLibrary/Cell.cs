@@ -13,6 +13,11 @@ namespace GameLibrary
             Y = y;
         }
 
+        public Point(Point point)
+        {
+            X = point.X;
+            Y = point.Y;
+        }
         public int X { get; set; }
         public int Y { get; set; }
 
