@@ -72,7 +72,8 @@ namespace GameLibrary
             if (!(target is null))
                 foreach (Cell item in Army)
                 {
-                    item.Attack(target);
+                    if (item is Unit)
+                        item.Attack(target);
                     if (item is Producer)
                         ((Building)item).Produce();
                 }

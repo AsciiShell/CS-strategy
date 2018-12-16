@@ -56,28 +56,32 @@ namespace GameLibrary
     public class Tower : Building
     {
         private const uint TOWER_DAMAGE = 4;
-        private const uint TOWER_HP = 500;
+        private const uint TOWER_HP = 5;
         private const uint TOWER_FREQ = 500;
         private bool TargetHandler()
         {
-            if (Target.Location.IsNearForLongRange(Location))
+            if (Target is null || !Target.IsAlive() || !Target.Location.IsNearForLongRange(Location))
+                foreach (Cell item in Owner.gameServer)
+                {
+                    if (item.Owner != Owner && item.IsAlive() && item.Location.IsNearForLongRange(Location))
+                        Target = item;
+                }
+            if (!(Target is null))
                 Target.GetDamage(this);
-            return Target.IsAlive() && IsAlive();
+            return IsAlive();
         }
         public Tower(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
             HP = TOWER_HP;
             BaseDamage = TOWER_DAMAGE;
+            Notifer.Subscribe(TargetHandler, TOWER_FREQ);
         }
 
         public override void Attack(Cell target)
         {
-            if (target.Owner == Owner)
+            if (target is null || !target.IsAlive() || !target.Location.IsNearForLongRange(Location))
                 return;
-            var lastTarget = Target;
             Target = target;
-            if (lastTarget == null || !lastTarget.IsAlive())
-                Notifer.Subscribe(TargetHandler, TOWER_FREQ);
         }
         public override void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty)
         {
