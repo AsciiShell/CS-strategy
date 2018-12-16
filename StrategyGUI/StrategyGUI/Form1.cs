@@ -63,13 +63,13 @@ namespace StrategyGUI
             Pen redPen = new Pen(Color.Red, 3);
             Pen bluePen = new Pen(Color.Blue, 3);
 
-            for (int i = 0; i < _xn; i++)
+            /*for (int i = 0; i < _xn; i++)
             {
                 for (int j = 0; j < _yn; j++)
                 {
                     e.Graphics.DrawRectangle(blackPen, _otx + _sx * i, _oty + _sy * j, _sx, _sy);
                 }
-            }
+            }*/
             if (_selX1 != -1 && _selY1 != -1)
                 e.Graphics.DrawRectangle(redPen, _otx + _sx * _selX1 + 1, _oty + _sy * _selY1 + 1, _sx - 2, _sy - 2);
             if (_selX2 != -1 && _selY2 != -1)
@@ -126,7 +126,7 @@ namespace StrategyGUI
                 _selY1 = -1;
                 _selX2 = -1;
                 _selY2 = -1;
-                
+                _lastCell.Clear();
             }
             else { 
                 int x, y;
