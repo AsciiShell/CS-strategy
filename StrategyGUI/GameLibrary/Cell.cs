@@ -1,6 +1,8 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 using System;
+using System.Windows.Forms;
+
 namespace GameLibrary
 {
     public class Point
@@ -88,5 +90,6 @@ namespace GameLibrary
         }
         public abstract void Attack(Cell target);
         public bool IsAlive() => HP != 0;
+        public abstract void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty);
     }
 }

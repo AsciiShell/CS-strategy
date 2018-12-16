@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using GameLibrary;
 namespace StrategyGUI
 {
     public partial class Form1 : Form
@@ -26,10 +26,11 @@ namespace StrategyGUI
         private int _selX;
         private int _selY;
         private PaintEventArgs _args;
-
+        private GameServer gameServer;
 
         public Form1()
         {
+            gameServer = new GameServer(new Player(Player.Kind.USER, "User1"), new Player(Player.Kind.BOT, "BOT1"));
              _xn = 20;
              _yn = 9;
              _otx = 15;
@@ -66,74 +67,18 @@ namespace StrategyGUI
 
         private void DrawUnits(PaintEventArgs e)
         {
-            Pen p = new Pen(Color.Blue, _sy / 12);
-            //int mass[9][2] ;
-            drawM(e, 0, 1, p);
-            drawM(e, 0, 4, p);
-            drawM(e, 0, 7, p);
-
-            drawP(e, 2, 2, p);
-            drawP(e, 2, 4, p);
-            drawP(e, 2, 6, p);
-
-            drawT(e, 4, 1, p);
-            drawT(e, 4, 4, p);
-            drawT(e, 4, 7, p);
+            foreach (Cell item in gameServer.Players[0].Army)
+            {
+                item.Draw(e, _sx, _sy, _otx, _oty);
+            }
+            foreach (Cell item in gameServer.Players[1].Army)
+            {
+                item.Draw(e, _sx, _sy, _otx, _oty);
+            }
         }
 
-        private void drawM(PaintEventArgs e, int x, int y, Pen p)
-        {
-            Graphics gr = e.Graphics;
-             //= new Pen(Color.Blue, _sy/12);// цвет линии и ширина
-            int sh = 8, vi = 8;
 
-            Point p1 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + vi * _sy / 10);// первая точка
-            Point p2 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// вторая точка
-            Point p3 = new Point(x * _sx + _otx + 2 * _sx / 4, y * _sy + _oty + 1 * _sy / 2);
-            Point p4 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + (10 - vi) * _sy / 10);
-            Point p5 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + vi * _sy / 10);
 
-            gr.DrawLine(p, p1, p2);// рисуем линию
-            gr.DrawLine(p, p3, p2);
-            gr.DrawLine(p, p3, p4);
-            gr.DrawLine(p, p5, p4);
-           // gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
-        }
-
-        private void drawT(PaintEventArgs e, int x, int y, Pen pp)
-        {
-            Graphics gr = e.Graphics;
-            // = new Pen(Color.Blue, _sy/12);// цвет линии и ширина
-            int sh = 8, vi = 8;
-
-            Point p1 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// первая точка
-            Point p2 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// вторая точка
-
-            Point p3 = new Point(x * _sx + _otx + _sx / 2, y * _sy + _oty + (10 - vi) * _sy / 10);
-            Point p4 = new Point(x * _sx + _otx + _sx / 2, y * _sy + _oty + vi * _sy / 10);
-
-            gr.DrawLine(pp, p1, p2);// рисуем линию
-            gr.DrawLine(pp, p3, p4);
-            //gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
-        }
-
-        private void drawP(PaintEventArgs e, int x, int y, Pen pp)
-        {
-            Graphics gr = e.Graphics;
-            // = new Pen(Color.Blue, _sy/12);// цвет линии и ширина
-            int sh = 7, vi = 8;
-
-            Point p1 = new Point(x * _sx + _otx + _sx * (10 - sh) / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// первая точка
-            Point p2 = new Point(x * _sx + _otx + _sx * sh / 10, y * _sy + _oty + (10 - vi) * _sy / 10);// вторая точка
-
-            Point p3 = new Point(x * _sx + _otx + (10 - sh) * _sx / 10, y * _sy + _oty + vi * _sy / 10);
-            Point p4 = new Point(x * _sx + _otx + sh * _sx / 10, y * _sy + _oty + vi * _sy / 10);
-
-            gr.DrawLine(pp, p3, p1);
-            gr.DrawLine(pp, p1, p2);// рисуем линию
-            gr.DrawLine(pp, p2, p4);
-            //gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
-        }
         /* private void button2_Click(object sender, EventArgs e)
          {
 
