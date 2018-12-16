@@ -164,19 +164,7 @@ namespace StrategyGUI
 
                                     _selX1 = -1;
                                     _selY1 = -1;
-                                }
-                                if (item is Tower)
-                                {
-                                    
-                                    _selX1 = -1;
-                                    _selY1 = -1;
-                                }
-                                if (item is Unit)
-                                {
-
-                                    _selX1 = -1;
-                                    _selY1 = -1;
-                                }
+                                }                                                           
                             }
                         }
                     }
