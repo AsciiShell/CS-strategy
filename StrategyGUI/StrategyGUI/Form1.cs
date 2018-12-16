@@ -33,10 +33,10 @@ namespace StrategyGUI
         public Form1()
         {
             gameServer = new GameServer(new Player(Player.Kind.USER, "User1"), new Player(Player.Kind.BOT, "BOT1"));
-             _xn = 20;
-             _yn = 9;
-             _otx = 15;
-             _oty = 30;
+            _xn = 20;
+            _yn = 9;
+            _otx = 15;
+            _oty = 30;
 
             _selX1 = -1;
             _selY1 = -1;
@@ -47,7 +47,7 @@ namespace StrategyGUI
             _w = this.Size.Width;
             _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
             _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
-           
+            Notifer.Subscribe(paintAll, 500);
         }
 
         private void DrawRectangleInt(PaintEventArgs e)
@@ -91,7 +91,7 @@ namespace StrategyGUI
             
             paintAll();            
         }
-        private void paintAll()
+        private bool paintAll()
         {
             
             _h = this.Size.Height - 39;
@@ -103,6 +103,7 @@ namespace StrategyGUI
             DrawRectangleInt(args);
             DrawUnits(args);
             args.Graphics.Dispose();
+                return true;
         }
         /*private void paintAroundCell(int x, int y)
         {
