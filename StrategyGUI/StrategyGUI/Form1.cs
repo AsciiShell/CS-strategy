@@ -23,8 +23,11 @@ namespace StrategyGUI
         private int _h;
         private int _sx;
         private int _sy;
-        private int _selX;
-        private int _selY;
+        private int _selX1;
+        private int _selY1;
+        private int _selX2;
+        private int _selY2;
+
         private GameServer gameServer;
 
         public Form1()
@@ -35,8 +38,10 @@ namespace StrategyGUI
              _otx = 15;
              _oty = 30;
 
-            _selX = -1;
-            _selY = -1;
+            _selX1 = -1;
+            _selY1 = -1;
+            _selX2 = -1;
+            _selY2 = -1;
             InitializeComponent();
             _h = this.Size.Height - 39;
             _w = this.Size.Width;
@@ -49,7 +54,8 @@ namespace StrategyGUI
         {
 
             Pen blackPen = new Pen(Color.Black, 1);
-            Pen greenPen = new Pen(Color.Red, 3);
+            Pen redPen = new Pen(Color.Red, 3);
+            Pen bluePen = new Pen(Color.Blue, 3);
 
             for (int i = 0; i < _xn; i++)
             {
@@ -58,8 +64,10 @@ namespace StrategyGUI
                     e.Graphics.DrawRectangle(blackPen, _otx + _sx * i, _oty + _sy * j, _sx, _sy);
                 }
             }
-            if (_selX != -1 && _selY != -1)
-                e.Graphics.DrawRectangle(greenPen, _otx + _sx * _selX + 1, _oty + _sy * _selY + 1, _sx - 2, _sy - 2);
+            if (_selX1 != -1 && _selY1 != -1)
+                e.Graphics.DrawRectangle(redPen, _otx + _sx * _selX1 + 1, _oty + _sy * _selY1 + 1, _sx - 2, _sy - 2);
+            if (_selX2 != -1 && _selY2 != -1)
+                e.Graphics.DrawRectangle(bluePen, _otx + _sx * _selX2 + 1, _oty + _sy * _selY2 + 1, _sx - 2, _sy - 2);
 
         }
 
@@ -105,30 +113,104 @@ namespace StrategyGUI
 
         }*/
 
+        
+
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            int x, y;
+            if (e.Button == MouseButtons.Right)
+            {
+                _selX1 = -1;
+                _selY1 = -1;
+                _selX2 = -1;
+                _selY2 = -1;
+                paintAll();
+            }
+            else { 
+                int x, y;
             x = e.Location.X;
             y = e.Location.Y;
 
-            if (x < _otx || y < _oty || x > _sx * (_xn ) || y > _sy * (_yn +1))
-            {
-                label1.Text = "  ";
-                _selX = -1;
-                _selY = -1;
-                paintAll();
-            }
-            else
-            {
-                int iX = (x - _otx) / _sx;
-                int iY = (y - _oty) / _sy;
-                label1.Text = iX + "  " + iY;
+                if (x < _otx || y < _oty || x > _sx * (_xn) || y > _sy * (_yn + 1))
+                {
+                    //label1.Text = "  ";
+                    //_selX1 = -1;
+                    //_selY1= -1;
+                    //paintAll();
+                }
+                else
+                {
+                    int iX = (x - _otx) / _sx;
+                    int iY = (y - _oty) / _sy;
+                    label1.Text = iX + "  " + iY;
+                    if ((_selX1 == -1 && _selY1 == -1) || (_selX1 == iX && _selY1 == iY))
+                    {
+                        _selX1 = iX;
+                        _selY1 = iY;
+                        _selX2 = -1;
+                        _selY2 = -1;
+                        paintAll();
+                        foreach (Cell item in gameServer.Players[0].Army)
+                        {
+                            if (item.Location.X == iX && item.Location.X == iY)
+                            {                                
+                                if (item is Producer)
+                                {
+                                    
+                                    _selX1 = -1;
+                                    _selY1 = -1;
+                                }
+                                if (item is Miner)
+                                {
 
-                _selX = iX;
-                _selY = iY;
-                paintAll();
+                                    _selX1 = -1;
+                                    _selY1 = -1;
+                                }
+                                if (item is Tower)
+                                {
+                                    
+                                    _selX1 = -1;
+                                    _selY1 = -1;
+                                }
+                                if (item is Unit)
+                                {
+
+                                    _selX1 = -1;
+                                    _selY1 = -1;
+                                }
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach (Cell item in gameServer.Players[0].Army)
+                        {
+                            if (item.Location.X == iX && item.Location.X == iY)
+                            {
+                                if (item is Tower)
+                                {
+                                    //это башня
+                                }
+                                if (item is Miner)
+                                {
+                                    //это miner
+                                }
+                                if (item is Producer)
+                                {
+                                    //это producer
+                                }
+                                if (item is Unit)
+                                {
+                                    //это unit
+                                }
+                            }
+                        }
+
+                        _selX2 = iX;
+                        _selY2 = iY;
+                        paintAll();
+                    }
+                }
             }
-        }
-    }
-    
+        }       
+    }    
 }
