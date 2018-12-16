@@ -25,7 +25,6 @@ namespace StrategyGUI
         private int _sy;
         private int _selX;
         private int _selY;
-        private PaintEventArgs _args;
         private GameServer gameServer;
 
         public Form1()
@@ -43,7 +42,7 @@ namespace StrategyGUI
             _w = this.Size.Width;
             _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
             _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
-            _args  = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
+           
         }
 
         private void DrawRectangleInt(PaintEventArgs e)
@@ -57,7 +56,6 @@ namespace StrategyGUI
                 for (int j = 0; j < _yn; j++)
                 {
                     e.Graphics.DrawRectangle(blackPen, _otx + _sx * i, _oty + _sy * j, _sx, _sy);
-
                 }
             }
             if (_selX != -1 && _selY != -1)
@@ -76,31 +74,36 @@ namespace StrategyGUI
                 item.Draw(e, _sx, _sy, _otx, _oty);
             }
         }
-
-
-
         /* private void button2_Click(object sender, EventArgs e)
          {
 
          }*/
-
         private void button3_Click(object sender, EventArgs e)
         {
-            _args.Dispose();
-            paintAll();
             
+            paintAll();            
         }
-
         private void paintAll()
         {
+            
             _h = this.Size.Height - 39;
             _w = this.Size.Width;
             _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
             _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
-            _args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
-            DrawRectangleInt(_args);
-            DrawUnits(_args);
+            PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
+            args.Graphics.DrawRectangle(new Pen(Color.Green, this.Height ), 0,0, this.Width, this.Height);
+            DrawRectangleInt(args);
+            DrawUnits(args);
+            args.Graphics.Dispose();
         }
+        /*private void paintAroundCell(int x, int y)
+        {
+            PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle((x-1) * _sx + _otx, (y - 1) * _sy + _oty, (x + 1) * _sx + _otx, (y + 1) * _sy + _oty));
+            args.Graphics.DrawRectangle(new Pen(Color.Green, _sx * 3/2),
+                (x - 1) * _sx + _otx + _sx * 3 / 2, (y - 1) * _sy + _oty + _sx * 3 / 2,
+                (x ) * _sx + _otx - _sx * 3 / 2, (y ) * _sy + _oty - _sx * 3 / 2);
+
+        }*/
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
@@ -113,7 +116,7 @@ namespace StrategyGUI
                 label1.Text = "  ";
                 _selX = -1;
                 _selY = -1;
-                DrawRectangleInt(_args);
+                paintAll();
             }
             else
             {
@@ -123,7 +126,7 @@ namespace StrategyGUI
 
                 _selX = iX;
                 _selY = iY;
-                DrawRectangleInt(_args);
+                paintAll();
             }
         }
     }
