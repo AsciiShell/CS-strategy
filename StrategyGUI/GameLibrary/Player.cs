@@ -8,7 +8,7 @@ namespace GameLibrary
     public class Player
     {
         private const uint DEFAULT_RESOURCES = Producer.PRODUCER_PRICE;
-        private const uint BOT_FREQ = 2000;
+        private const uint BOT_FREQ = 1000;
         public enum Kind
         {
             USER,

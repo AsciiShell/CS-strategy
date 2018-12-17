@@ -1,4 +1,4 @@
-// This is a personal academic project. Dear PVS-Studio, please check it.
+﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 using System.Drawing;
 using System.Windows.Forms;
@@ -17,7 +17,7 @@ namespace GameLibrary
 
     public class Miner : Building
     {
-        private const uint TIMER_TICK = 1000;
+        private const uint TIMER_TICK = 1500;
         private const uint MINER_COUNT = 1;
         private const uint MINER_HP = 200;
         public Miner(Item.Kind kind, Point location, Player player) : base(kind, location, player)
