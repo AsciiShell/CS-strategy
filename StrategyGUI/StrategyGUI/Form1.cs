@@ -92,20 +92,20 @@ namespace StrategyGUI
          {
 
          }*/
-        
+
         private bool paintAll()
         {
-            
+
             _h = this.Size.Height - 39;
             _w = this.Size.Width;
             _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
             _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
             PaintEventArgs args = new PaintEventArgs(this.CreateGraphics(), new Rectangle(0, 0, _w, _h));
-            args.Graphics.DrawRectangle(new Pen(Color.Green, this.Height ), 0,0, this.Width, this.Height);
+            args.Graphics.DrawRectangle(new Pen(Color.Green, this.Height), 0, 0, this.Width, this.Height);
             DrawRectangleInt(args);
             DrawUnits(args);
             args.Graphics.Dispose();
-                return gameServer.IsEnabled;
+            return gameServer.IsEnabled;
         }
         /*private void paintAroundCell(int x, int y)
         {
@@ -116,80 +116,68 @@ namespace StrategyGUI
 
         }*/
 
-        
+
 
         private void Form1_MouseClick(object sender, MouseEventArgs e)
         {
-            if (e.Button == MouseButtons.Right)
-            {
-                _selX1 = -1;
-                _selY1 = -1;
-                _selX2 = -1;
-                _selY2 = -1;
-                _lastCell.Clear();
-            }
-            else { 
-                int x, y;
+            int x, y;
             x = e.Location.X;
             y = e.Location.Y;
+            if (!(x < _otx || y < _oty || x > _sx * (_xn) || y > _sy * (_yn + 1)))
+            {                
+                int iX = (x - _otx) / _sx;
+                int iY = (y - _oty) / _sy;
+                label1.Text = iX + "  " + iY;
+                if (e.Button == MouseButtons.Right && _lastCell.Count != 0)
+                {
 
-                if (x < _otx || y < _oty || x > _sx * (_xn) || y > _sy * (_yn + 1))
-                {
-                    //label1.Text = "  ";
-                    //_selX1 = -1;
-                    //_selY1= -1;
-                    //paintAll();
-                }
-                else
-                {
-                    int iX = (x - _otx) / _sx;
-                    int iY = (y - _oty) / _sy;
-                    label1.Text = iX + "  " + iY;
-                    if (_lastCell.Count == 0 )
+                    foreach (Cell item in _enemy.Army)
                     {
-                        
-                        _selX1 = iX;
-                        _selY1 = iY;
-                        _selX2 = -1;
-                        _selY2 = -1;
-                        _lastCell.Clear();
-                        foreach (Cell item in _me.Army)
+                        if (item.Location.X == iX && item.Location.Y == iY)
                         {
-                            if (item.Location.X == iX && item.Location.Y == iY)
-                            {                                
-                                if (item is Tower)
-                                {
-                                    _lastCell.Append(item);
-                                }
-                                if (item is Producer)
-                                {
-                                    ((Building)item).Produce();
-                                }
-                                if (item is Unit)
-                                {
-                                    _lastCell.Append(item);
-                                }                                                           
-                            }
-                        }
-                    }
-                    else //if(_lastCell != null)
-                    {
-                        foreach (Cell item in _enemy.Army)
-                        {
-                            if (item.Location.X == iX && item.Location.Y == iY)
-                            {
+                            if ((item is Building) || (item is Unit))
                                 foreach (Cell item2 in _lastCell)
                                 {
                                     item2.Attack(item);
                                 }
+                            else
+                                foreach (Cell item2 in _lastCell)
+                                {
+                                    ((Unit)item2).Move(item.Location);
+                                }
+                        }
+                    }
+                    _selX2 = iX;
+                    _selY2 = iY;
+                }
+                else
+                {
+
+                    _selX1 = iX;
+                    _selY1 = iY;
+                    _selX2 = -1;
+                    _selY2 = -1;
+                    _lastCell.Clear();
+                    foreach (Cell item in _me.Army)
+                    {
+                        if (item.Location.X == iX && item.Location.Y == iY)
+                        {
+                            if (item is Tower)
+                            {
+                                _lastCell.Append(item);
+                            }
+                            if (item is Producer)
+                            {
+                                ((Building)item).Produce();
+                            }
+                            if (item is Unit)
+                            {
+                                _lastCell.Append(item);
                             }
                         }
-                        _selX2 = iX;
-                        _selY2 = iY;
-                        
                     }
                 }
             }
-        }       
-    }    
+        }
+    }
 }
