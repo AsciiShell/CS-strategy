@@ -54,6 +54,7 @@ namespace StrategyGUI
             _sx = (this.Size.Width - 15 - 2 * _otx) / _xn;
             _sy = (this.Size.Height - 39 - 2 * _oty) / _yn;
             Notifer.Subscribe(paintAll, 500);
+
         }
 
         private void DrawRectangleInt(PaintEventArgs e)
@@ -105,7 +106,9 @@ namespace StrategyGUI
             DrawRectangleInt(args);
             DrawUnits(args);
             args.Graphics.Dispose();
+
             return gameServer.IsEnabled;
+            
         }
         /*private void paintAroundCell(int x, int y)
         {
@@ -176,8 +179,16 @@ namespace StrategyGUI
                             }
                         }
                     }
+                    label5.Text = _lastCell.Count.ToString();
                 }
             }
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            label2.Text = "Rock: " + _me.ResourcesRock.ToString();
+            label4.Text = "Paper: " + _me.ResourcesPaper.ToString();
+            label3.Text = "Scissors: " + _me.ResourcesScissors.ToString();
         }
     }
 }
