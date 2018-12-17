@@ -50,7 +50,7 @@ namespace GameLibrary
         public override void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty)
         {
             int sh = 8, vi = 8;
-            Pen p = new Pen(Owner.Color, 2);
+            Pen p = GetColor();
             System.Drawing.Point p1 = new System.Drawing.Point(Location.X * sx + otx + sx * (10 - sh) / 10, Location.Y * sy + oty + vi * sy / 10);
             System.Drawing.Point p2 = new System.Drawing.Point(Location.X * sx + otx + sx * (10 - sh) / 10, Location.Y * sy + oty + (10 - vi) * sy / 10);
             System.Drawing.Point p4 = new System.Drawing.Point(Location.X * sx + otx + sx * sh / 10, Location.Y * sy + oty + (10 - vi) * sy / 10);
@@ -58,6 +58,7 @@ namespace GameLibrary
 
             e.Graphics.DrawLine(p, p1, p4);// рисуем линию
             e.Graphics.DrawLine(p, p2, p5);
+            DrawKind(e, sx, sy, otx, oty);
         }
     }
 }

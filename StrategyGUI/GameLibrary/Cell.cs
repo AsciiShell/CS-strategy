@@ -1,6 +1,7 @@
 ﻿// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 using System;
+using System.Drawing;
 using System.Windows.Forms;
 
 namespace GameLibrary
@@ -93,8 +94,39 @@ namespace GameLibrary
                 HP -= (uint)damage;
             Console.WriteLine(HP);
         }
+        protected Pen GetColor() => IsAlive() ? new Pen(Owner.Color, 2) : new Pen(Color.Gray, 2);
         public abstract void Attack(Cell target);
         public bool IsAlive() => HP != 0;
         public abstract void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty);
+
+        protected void DrawKind(PaintEventArgs e, int sx, int sy, int otx, int oty)
+        {
+            int sh = 8, vi = 8;
+            Pen p = GetColor();
+            System.Drawing.Point p1 = new System.Drawing.Point(Location.X * sx + otx + sx * sh / 10, Location.Y * sy + oty + vi * sy / 10);// первая точка
+            System.Drawing.Point p2 = new System.Drawing.Point(Location.X * sx + otx + sx * (sh + 3) / 10, Location.Y * sy + oty + vi * sy / 10);// вторая точка
+            System.Drawing.Point p3 = new System.Drawing.Point(Location.X * sx + otx + (sh + 3) * sx / 10, Location.Y * sy + oty + (vi + 3) * sy / 10);
+            System.Drawing.Point p4 = new System.Drawing.Point(Location.X * sx + otx + sx * sh / 10, Location.Y * sy + oty + (3 + vi) * sy / 10);
+            System.Drawing.Point p5 = new System.Drawing.Point((p1.X + p3.X) / 2, (p1.Y + p3.Y) / 2);
+
+
+            if (kind == Item.Kind.PAPER)
+            {
+                e.Graphics.DrawLine(p, p1, p2);
+                e.Graphics.DrawLine(p, p2, p3);
+                e.Graphics.DrawLine(p, p3, p4);
+                e.Graphics.DrawLine(p, p4, p1);
+            }
+            else if (kind == Item.Kind.ROCK)
+            {
+                e.Graphics.DrawEllipse(p, p1.X, p1.Y, p3.X - p1.X, p3.Y - p1.Y);
+            }
+            else
+            {
+                e.Graphics.DrawLine(p, p1, p3);
+                e.Graphics.DrawLine(p, p2, p4);
+
+            }
+        }
     }
 }

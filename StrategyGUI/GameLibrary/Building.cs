@@ -1,4 +1,4 @@
-﻿// This is a personal academic project. Dear PVS-Studio, please check it.
+// This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 using System.Drawing;
 using System.Windows.Forms;
@@ -13,7 +13,6 @@ namespace GameLibrary
         public virtual void Produce() { }
         public override void Attack(Cell target) { }
         public override abstract void Draw(PaintEventArgs e, int sx, int sy, int otx, int oty);
-        protected Pen GetColor() => IsAlive() ? new Pen(Owner.Color, 2) : new Pen(Color.Gray, 2);
     }
 
     public class Miner : Building
@@ -51,6 +50,7 @@ namespace GameLibrary
             e.Graphics.DrawLine(p, p3, p2);
             e.Graphics.DrawLine(p, p3, p4);
             e.Graphics.DrawLine(p, p5, p4);
+            DrawKind(e, sx, sy, otx, oty);
         }
     }
     public class Tower : Building
@@ -97,6 +97,7 @@ namespace GameLibrary
 
             e.Graphics.DrawLine(p, p1, p2);// рисуем линию
             e.Graphics.DrawLine(p, p3, p4);
+            DrawKind(e, sx, sy, otx, oty);
         }
     }
 
@@ -162,7 +163,7 @@ namespace GameLibrary
             e.Graphics.DrawLine(p, p3, p1);
             e.Graphics.DrawLine(p, p1, p2);// рисуем линию
             e.Graphics.DrawLine(p, p2, p4);
-            // gr.Dispose();// освобождаем все ресурсы, связанные с отрисовкой
+            DrawKind(e, sx, sy, otx, oty);
         }
     }
 }
