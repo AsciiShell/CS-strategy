@@ -11,6 +11,7 @@ namespace GameLibrary
         private const uint UNIT_DAMAGE = 10;
         private const uint UNIT_HP = 100;
         private const uint UNIT_FREQ = 1000;
+        private bool IsEnabled = false;
 
         private bool TargetHandler()
         {
@@ -18,7 +19,8 @@ namespace GameLibrary
                 Target.GetDamage(this);
             else
                 Move(Target.Location);
-            return Target.IsAlive() && IsAlive();
+            IsEnabled = Target.IsAlive() && IsAlive();
+            return IsEnabled;
         }
         public Unit(Item.Kind kind, Point location, Player player) : base(kind, location, player)
         {
@@ -30,9 +32,8 @@ namespace GameLibrary
         {
             if (target.Owner == Owner)
                 return;
-            var lastTarget = Target;
             Target = target;
-            if (lastTarget == null || !lastTarget.IsAlive())
+            if (!IsEnabled)
                 Notifer.Subscribe(TargetHandler, UNIT_FREQ);
 
         }
